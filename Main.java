@@ -3,7 +3,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Main {
+public class Main 
+{
 	
 	static final String prefix = "!", nick = "botnick", pass = "oauth:token", channel = "#channel";
 	static PrintWriter out;
