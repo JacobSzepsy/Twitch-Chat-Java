@@ -2,16 +2,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Main {
 	static final String PREFIX = "!", NICK = "botnick", PASS = "oauth:token", CHANNEL = "#channel", IP = "irc.chat.twitch.tv";
-	static final int PORT = 6667;
-	
+	static final int PORT = 6667, DELAY = 500;
+
 	static PrintWriter out;
 	static BufferedReader in;
 	static Socket twitch;
 	ArrayList<String> messages = new ArrayList<String>();
-	
+
 	public class MessageQueue extends Thread {
 		public void run() {
 			while (!messages.isEmpty()) {
@@ -35,8 +36,7 @@ public class Main {
 			messages.add("PRIVMSG " + CHANNEL + " :" + msg);
 		}
 	}
-	
-	//TODO implement separate limit for whispers
+
 	public void sendWhisper(String user, String msg) {
 		out.println("PRIVMSG " + CHANNEL + " :/w " + user + " " + msg);
 	}
