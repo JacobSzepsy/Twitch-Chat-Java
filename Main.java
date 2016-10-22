@@ -5,16 +5,18 @@ import java.net.Socket;
 
 public class Main 
 {
+	static final String PREFIX = "!", NICK = "botnick", PASS = "oauth:token", CHANNEL = "#channel", IP = "irc.chat.twitch.tv";
+	static final int PORT = 6667;
 	
-	static final String prefix = "!", nick = "botnick", pass = "oauth:token", channel = "#channel";
 	static PrintWriter out;
 	static BufferedReader in;
-	
-	String input, user;
+	static Socket twitch;
 	
 	public class InStream extends Thread
 	{
+		String input, user;
 		Main act = new Main();
+		
 		public void run()
 		{
 			try{
@@ -36,6 +38,7 @@ public class Main
 						input = input.substring(input.indexOf(":", input.indexOf("WHISPER"))+1);
 						act.onWhisper(user, input);
 					}
+					
 				}
 			}catch (Exception e)
 			{
@@ -47,20 +50,20 @@ public class Main
 	//TODO create a queue for outgoing messages
 	public void sendMessage(String msg)
 	{
-		out.println("PRIVMSG " + channel + " :" + msg);
+		out.println("PRIVMSG " + CHANNEL + " :" + msg);
 	}
 	
 	public void sendWhisper(String user, String msg)
 	{
-		out.println("PRIVMSG " + channel + " :/w " + user + " " + msg);
+		out.println("PRIVMSG " + CHANNEL + " :/w " + user + " " + msg);
 	}
 	
 	public void onMessage(String sender, String msg)
 	{
-		if(msg.equalsIgnoreCase(prefix + "love"))
+		if(msg.equalsIgnoreCase(PREFIX + "love"))
 		{
 			sendMessage(sender + " sends love bleedPurple bleedPurple bleedPurple");
-		}else if(msg.equalsIgnoreCase(prefix + "test"))
+		}else if(msg.equalsIgnoreCase(PREFIX + "test"))
 		{
 			sendMessage("This is a test command");
 		}
@@ -68,22 +71,22 @@ public class Main
 	
 	public void onWhisper(String sender, String msg)
 	{
-		System.out.println(sender + " whispered " + msg);
+		if(msg.equalsIgnoreCase(PREFIX + "test"))
+		{
+			sendWhisper(sender, "This is a test command");
+		}
 	}
 
 	public static void main(String[] args) throws Exception
 	{
-		String ip = "irc.chat.twitch.tv";
-		int port = 6667;
 		//TODO close socket on program exit
-		Socket twitch = new Socket(ip, port);
-		
+		twitch = new Socket(IP, PORT);
 		out = new PrintWriter(twitch.getOutputStream(), true);
 		in = new BufferedReader(new InputStreamReader(twitch.getInputStream()));
 		new Main().new InStream().start();
-		out.println("PASS " + pass);
-		out.println("NICK " + nick);
-		out.println("JOIN " + channel);
+		out.println("PASS " + PASS);
+		out.println("NICK " + NICK);
+		out.println("JOIN " + CHANNEL);
 		out.println("CAP REQ :twitch.tv/membership");
 		out.println("CAP REQ :twitch.tv/commands");
 	}
