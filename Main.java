@@ -25,10 +25,7 @@ public class Main
 	
 	public void onMessage(String sender, String msg)
 	{
-		if(msg.equalsIgnoreCase(PREFIX + "love"))
-		{
-			sendMessage(sender + " sends love bleedPurple bleedPurple bleedPurple");
-		}else if(msg.equalsIgnoreCase(PREFIX + "test"))
+		if(msg.equalsIgnoreCase(PREFIX + "test"))
 		{
 			sendMessage("This is a test command");
 		}
