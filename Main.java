@@ -12,41 +12,6 @@ public class Main
 	static BufferedReader in;
 	static Socket twitch;
 	
-	public class InStream extends Thread
-	{
-		String input, user;
-		Main act = new Main();
-		
-		public void run()
-		{
-			try{
-				while((input = in.readLine()) != null)
-				{
-					System.out.println(input);
-					if(input.startsWith("PING"))
-					{
-						out.println("PONG :tmi.twitch.tv");
-						System.out.println("PONG :tmi.twitch.tv");
-					}else if(input.contains("PRIVMSG"))
-					{
-						user = input.substring(1, input.indexOf("!"));
-						input = input.substring(input.indexOf(":", input.indexOf("PRIVMSG"))+1);
-						act.onMessage(user, input);
-					}else if(input.contains("WHISPER"))
-					{
-						user = input.substring(1, input.indexOf("!"));
-						input = input.substring(input.indexOf(":", input.indexOf("WHISPER"))+1);
-						act.onWhisper(user, input);
-					}
-					
-				}
-			}catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	//TODO create a queue for outgoing messages
 	public void sendMessage(String msg)
 	{
@@ -83,7 +48,7 @@ public class Main
 		twitch = new Socket(IP, PORT);
 		out = new PrintWriter(twitch.getOutputStream(), true);
 		in = new BufferedReader(new InputStreamReader(twitch.getInputStream()));
-		new Main().new InStream().start();
+		new InStream().start();
 		out.println("PASS " + PASS);
 		out.println("NICK " + NICK);
 		out.println("JOIN " + CHANNEL);
