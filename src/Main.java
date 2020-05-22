@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Main {
-	static final String PREFIX = "!", NICK = "botcircuit", PASS = "oauth:d7sg3ivjgbofzyhqqh3oap143woo05", CHANNEL = "#crypticcircuit", IP = "irc.chat.twitch.tv";
+	static final String PREFIX = "!", NICK = "botcircuit", PASS = "oauth:", CHANNEL = "#crypticcircuit", IP = "irc.chat.twitch.tv";
 	static final int PORT = 6667, DELAY = 500;
 
 	static PrintWriter out;
